@@ -28,7 +28,7 @@ git clone https://github.com/ikimiya/stable-diffusion-webui-dataset-tag-editor-f
 ### タグインプリケーション
 データセット全体の関連タグを整理するための新しいタブです。
 
-![](tab01.png)
+![](pic/tab01.png)
 
 **使い方:**
 1. **Scan Dataset** をクリックしてタグを読み込む
@@ -38,7 +38,7 @@ git clone https://github.com/ikimiya/stable-diffusion-webui-dataset-tag-editor-f
 5. 必要に応じてカスタムタグを追加 — 例: `miniskirt, grey skirt`
 6. **Apply** をクリック
 
-![](tab03.png)
+![](pic/tab03.png)
 
 適用後、`skirt` を持つ17枚の画像すべてに `white skirt`、`pleated skirt`、`miniskirt`、`grey skirt` が追加されます。親タグはデフォルトで削除されます。
 

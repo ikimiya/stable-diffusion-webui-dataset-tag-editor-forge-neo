@@ -28,7 +28,7 @@ git clone https://github.com/ikimiya/stable-diffusion-webui-dataset-tag-editor-f
 
 ### Tag Implication 
 This is an example of the new tab on load images.
-![](tab01.png)
+![](pic/tab01.png)
 
 
 **How to use:**
@@ -39,7 +39,7 @@ This is an example of the new tab on load images.
 5. Add custom tags if needed — e.g. `miniskirt, grey skirt`
 6. Click **Apply**
 
-![](tab03.png)
+![](pic/tab03.png)
 
 After applying, all 17 images with `skirt` will gain `white skirt`, `pleated skirt`, `miniskirt`, and `grey skirt`. The parent tag is removed by default.
 
