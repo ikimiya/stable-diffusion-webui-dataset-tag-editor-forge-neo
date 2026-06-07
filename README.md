@@ -1,3 +1,98 @@
+# Dataset Tag Editor Neo
+
+Fork of [toshiaki1729/stable-diffusion-webui-dataset-tag-editor](https://github.com/toshiaki1729/stable-diffusion-webui-dataset-tag-editor) updated for compatibility with [Haoming02/sd-webui-forge-classic](https://github.com/Haoming02/sd-webui-forge-classic) (neo branch).
+
+An extension to edit captions in training datasets for [SD WebUI Forge Neo](https://github.com/Haoming02/sd-webui-forge-classic).
+
+Captions in image filenames can be loaded, but edited captions can only be saved as text files.
+
+## Installation
+### Extensions tab on WebUI
+1. In Forge-Neo go to **Extensions → Install from URL**
+2. Paste: `https://github.com/ikimiya/stable-diffusion-webui-dataset-tag-editor-forge-neo`
+3. Click Install, then Apply and restart
+
+**Please note that if you update this extension from "Extensions" tab, you will need to restart web UI to reload completely.**  
+
+### Install Manually
+To install, clone the repository into the `extensions` directory and restart the web UI.
+
+On the web UI directory, run the following command to install:
+```commandline
+git clone https://github.com/ikimiya/stable-diffusion-webui-dataset-tag-editor-forge-neo extensions/dataset-tag-editor
+```
+
+> Tested on Forge-Neo (neo branch) · Gradio 4.40.0 · Python 3.13.12
+
+## New Features
+
+### Tag Implication 
+This is an example of the new tab on load images.
+![](tab01.png)
+
+
+**How to use:**
+1. Click **Scan Dataset** to load tags
+2. Select a parent tag — e.g. `skirt (17)`
+3. Check tags to **add** — e.g. `white skirt (7)`, `pleated skirt (4)`
+4. Check tags to **delete** — e.g. `shorts under skirt (2)`
+5. Add custom tags if needed — e.g. `miniskirt, grey skirt`
+6. Click **Apply**
+
+![](tab03.png)
+
+After applying, all 17 images with `skirt` will gain `white skirt`, `pleated skirt`, `miniskirt`, and `grey skirt`. The parent tag is removed by default.
+
+If you edit tags from another tab, click **Scan Dataset** again to refresh counts.
+
+> **Tag Autocomplete For Tab**
+> To enable autocomplete in the custom tag fields, open:
+> `extensions\a1111-sd-webui-tagcomplete\javascript\_textAreas.js`
+>
+> Update the `dataset-tag-editor` selectors section (around line 20) to include the two new lines:
+> ```javascript
+> "dataset-tag-editor": {
+>     "base": "#tab_dataset_tag_editor_interface",
+>     "hasIds": false,
+>     "selectors": [
+>         "Caption of Selected Image",
+>         "Interrogate Result",
+>         "Edit Caption",
+>         "Edit Tags",
+>         "Add custom tags to add (comma-separated)",
+>         "Add custom tags to delete (comma-separated)",
+>     ]
+> },
+> ```
+
+## Changes from Original
+
+**Forge-Neo / A1111 compatibility**
+- Removed `lowvram` module — Forge-Neo handles memory management automatically
+- Removed `ldm` imports — unused 
+- Added a local of A1111 `sd_hijack.py` — to replace missing `modules.sd_hijack`
+- Added in `compat.py` — patches missing `shared.opts` settings at startup
+- Fixed `shared.cmd_opts.use_cpu` reference
+- Added null guard for `shared.sd_model.cond_stage_model` with word-split fallback for flux\anima
+- `DeepDanbooru` tagger removed, forge doesn't use this 
+- Fixed `read_wd_batchsize` missing large taggers `wd-eva02-large` and `wd-vit-large` etc.
+- Restored missing tagger entries in `WD_TAGGERS_TIMM`
+
+**Gradio 4 compatibility**
+- Wrapped instance method callbacks with lambdas to fix input validation errors
+
+**Dependencies**
+- Added `install.py` — auto-installs `open-clip-torch` on startup
+
+## Known Limitations
+- DeepDanbooru tagger is disabled — use WD14 or EVA-02 instead
+- Token counter uses word-split, not the exact tokens
+
+---
+
+
+*Original README below*
+
 # Dataset Tag Editor
 [**Stand alone version is here**](https://github.com/toshiaki1729/dataset-tag-editor-standalone): This may be better to avoid some known bugs.
 

@@ -124,12 +124,16 @@ class TagImplicationUI(UIBase):
                 )
 
                 self.tb_custom_add = gr.Textbox(
-                    label="➕ Add custom tags to add (comma-separated)",
+                    label="Add custom tags to add (comma-separated)",
                     placeholder="e.g. fingerless gloves, lace gloves",
+                    elem_id="tag_implication_custom_add",
+                    elem_classes=["autocomplete"],
                 )
                 self.tb_custom_delete = gr.Textbox(
-                    label="🗑 Add custom tags to delete (comma-separated)",
+                    label="Add custom tags to delete (comma-separated)",
                     placeholder="e.g. white gloves",
+                    elem_id="tag_implication_custom_delete",
+                    elem_classes=["autocomplete"],
                 )
 
         gr.HTML(value="<hr style='border-color:#333;margin:10px 0'>")

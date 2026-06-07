@@ -1,3 +1,96 @@
+# Dataset Tag Editor Neo
+
+[toshiaki1729/stable-diffusion-webui-dataset-tag-editor](https://github.com/toshiaki1729/stable-diffusion-webui-dataset-tag-editor) のフォークで、[Haoming02/sd-webui-forge-classic](https://github.com/Haoming02/sd-webui-forge-classic)（neoブランチ）との互換性のために更新されました。
+
+[SD WebUI Forge Neo](https://github.com/Haoming02/sd-webui-forge-classic) のトレーニングデータセットのキャプションを編集する拡張機能です。
+
+画像ファイル名のキャプションは読み込めますが、編集したキャプションはテキストファイルとしてのみ保存できます。
+
+## インストール
+### WebUIの拡張機能タブから
+1. Forge-Neoで **Extensions → Install from URL** を開く
+2. 以下を貼り付ける: `https://github.com/ikimiya/stable-diffusion-webui-dataset-tag-editor-forge-neo`
+3. Installをクリックし、Apply and restartを行う
+
+**「Extensions」タブからこの拡張機能を更新した場合、完全に再読み込みするためにWeb UIを再起動する必要があります。**
+
+### 手動インストール
+リポジトリを `extensions` ディレクトリにクローンしてWeb UIを再起動してください。
+
+```commandline
+git clone https://github.com/ikimiya/stable-diffusion-webui-dataset-tag-editor-forge-neo extensions/dataset-tag-editor
+```
+
+> Forge-Neo（neoブランチ）・Gradio 4.40.0・Python 3.13.12 にて動作確認済み
+
+## 新機能
+
+### タグインプリケーション
+データセット全体の関連タグを整理するための新しいタブです。
+
+![](tab01.png)
+
+**使い方:**
+1. **Scan Dataset** をクリックしてタグを読み込む
+2. 親タグを選択 — 例: `skirt (17)`
+3. **追加** するタグにチェックを入れる — 例: `white skirt (7)`、`pleated skirt (4)`
+4. **削除** するタグにチェックを入れる — 例: `shorts under skirt (2)`
+5. 必要に応じてカスタムタグを追加 — 例: `miniskirt, grey skirt`
+6. **Apply** をクリック
+
+![](tab03.png)
+
+適用後、`skirt` を持つ17枚の画像すべてに `white skirt`、`pleated skirt`、`miniskirt`、`grey skirt` が追加されます。親タグはデフォルトで削除されます。
+
+他のタブでタグを編集した場合は、**Scan Dataset** を再度クリックしてカウントを更新してください。
+
+> **Tag Autocomplete について**
+> カスタムタグ入力欄でオートコンプリートを有効にするには、以下のファイルを開いてください:
+> `extensions\a1111-sd-webui-tagcomplete\javascript\_textAreas.js`
+>
+> `dataset-tag-editor` のセレクターセクション（約20行目）に以下の2行を追加してください:
+> ```javascript
+> "dataset-tag-editor": {
+>     "base": "#tab_dataset_tag_editor_interface",
+>     "hasIds": false,
+>     "selectors": [
+>         "Caption of Selected Image",
+>         "Interrogate Result",
+>         "Edit Caption",
+>         "Edit Tags",
+>         "Add custom tags to add (comma-separated)",
+>         "Add custom tags to delete (comma-separated)",
+>     ]
+> },
+> ```
+
+## オリジナルからの変更点
+
+**Forge-Neo / A1111 互換性**
+- `lowvram` モジュールを削除 — Forge-Neoが自動でメモリ管理を行うため
+- `ldm` インポートを削除 — 不要のため
+- A1111の `sd_hijack.py` をローカルコピーとして追加 — `modules.sd_hijack` が存在しないため
+- `compat.py` を追加 — 起動時に不足している `shared.opts` 設定をデフォルト値でパッチ
+- `shared.cmd_opts.use_cpu` の参照を修正
+- `shared.sd_model.cond_stage_model` にnullガードを追加 — Flux・Animaなどの新しいアーキテクチャでは単語分割にフォールバック
+- `DeepDanbooru` タガーを削除 — Forge-Neoでは使用されていないため
+- `read_wd_batchsize` の不足していた大型タガー（`wd-eva02-large`・`wd-vit-large` など）を修正
+- `WD_TAGGERS_TIMM` の不足していたタガーエントリを復元
+
+**Gradio 4 互換性**
+- 入力バリデーションエラーを修正するため、インスタンスメソッドのコールバックをラムダでラップ
+
+**依存関係**
+- `install.py` を追加 — 起動時に `open-clip-torch` を自動インストール
+
+## 既知の制限事項
+- DeepDanbooruタガーは無効 — WD14またはEVA-02を使用してください
+- トークンカウンターは正確なCLIPトークンではなく単語分割を使用
+
+---
+
+*AIによる翻訳*
+
 # Dataset Tag Editor
 [**スタンドアロン版はこちらです**](https://github.com/toshiaki1729/dataset-tag-editor-standalone): いくつかの既知のバグを回避するのに有効かもしれません。
 
